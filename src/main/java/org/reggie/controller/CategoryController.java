@@ -9,6 +9,7 @@ import org.reggie.common.Res;
 import org.reggie.pojo.Category;
 import org.reggie.service.CategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
@@ -18,15 +19,15 @@ import java.util.List;
 @RequestMapping("/category")
 @Slf4j
 public class CategoryController {
+
+    @Value("${reggie.session-key}")
+    private String Session_key;
     @Autowired
     private CategoryService categoryService;
 
     @PostMapping
-    public Res<String> insert(HttpServletRequest request, @RequestBody Category category) {
+    public Res<String> insert(@RequestBody Category category) {
         log.info("添加分类{}", category);
-
-        Long userId = (Long) request.getSession().getAttribute("employee");
-        BaseContext.setCurrentUserId(userId);
         categoryService.save(category);
         return Res.success("添加成功！");
     }
@@ -46,5 +47,20 @@ public class CategoryController {
     public Res<String> deleteById(Long ids){
         categoryService.removeById(ids);
         return Res.success("删除成功");
+    }
+
+    @PutMapping
+    public Res<String> update(@RequestBody Category category){
+        categoryService.updateById(category);
+        return Res.success("修改成功");
+    }
+
+    //    获取菜品分类下拉
+    @GetMapping("/list")
+    public Res<List<Category>> categoryList(int type) {
+        LambdaQueryWrapper<Category> categoryLambdaQueryWrapper = new LambdaQueryWrapper<>();
+        categoryLambdaQueryWrapper.eq(Category::getType,type);
+        List<Category> list = categoryService.list(categoryLambdaQueryWrapper);
+        return Res.success(list);
     }
 }

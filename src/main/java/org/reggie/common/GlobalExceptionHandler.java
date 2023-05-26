@@ -20,4 +20,12 @@ public class GlobalExceptionHandler {
         }
         return Res.error("未知的请求异常");
     }
+
+
+    @ExceptionHandler(HasOtherAssociateRecordsException.class)
+    public Res<String> exceptionHandler(HasOtherAssociateRecordsException ex) {
+
+        log.error(ex.getMessage());
+        return Res.error(ex.getMessage());
+    }
 }

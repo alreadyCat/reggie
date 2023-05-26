@@ -9,6 +9,12 @@ spring:
       url: jdbc:mysql://1.15.88.110:3306/reggie?serverTimezone=Asia/Shanghai&useUnicode=true&characterEncoding=utf-8&zeroDateTimeBehavior=convertToNull&useSSL=false&allowPublicKeyRetrieval=true
       username: remote-root
       password: ww171110
+  servlet:
+    multipart:
+      #单个请求单个文件最大值
+      max-file-size: 20MB
+      #单个请求多个文件最大值
+      max-request-size: 100MB
 mybatis-plus:
   configuration:
     #在映射实体或者属性时，将数据库中表名和字段名中的下划线去掉，按照驼峰命名法映射
@@ -17,3 +23,12 @@ mybatis-plus:
   global-config:
     db-config:
       id-type: ASSIGN_ID
+reggie:
+  session-key: reggie
+qcloud:
+  oss:
+    secretId: AKIDMXS7VcS1KL6ZlgKgmb9PO7Y7PRCgtpVu
+    secretKey: 8zauwhCSRActtc4KJ1SbT4ORDhuqWv3u
+    bucketName: littlenine-1259672777
+    regionStr: ap-nanjing
+    bucketPath: https://littlenine-1259672777.cos.ap-nanjing.myqcloud.com/

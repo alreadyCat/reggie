@@ -9,6 +9,7 @@ import org.reggie.common.Res;
 import org.reggie.pojo.Employee;
 import org.reggie.service.EmployeeService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.util.DigestUtils;
 import org.springframework.web.bind.annotation.*;
 
@@ -18,16 +19,15 @@ import java.util.List;
 
 @Slf4j
 @RestController
-@RequestMapping("employee")
+@RequestMapping("/employee")
 public class EmployeeController {
-
-    private String Session_Key = "employee";
+    @Value("${reggie.session-key}")
+    private String Session_Key ;
     @Autowired
     EmployeeService employeeService;
 
     @PostMapping("/login")
     public Res<Employee> login(HttpServletRequest req, @RequestBody Employee emp) {
-
 
         String pwd = emp.getPassword();
         pwd = DigestUtils.md5DigestAsHex(pwd.getBytes());
@@ -73,7 +73,7 @@ public class EmployeeController {
         employeeService.save(emp);
         return Res.success("新增员工成功");
     }
-    @GetMapping("page")
+    @GetMapping("/page")
     public Res<Page> page(int page,int pageSize,String name){
         // 构造分页构造器
         Page pageCon = new Page(page, pageSize);
