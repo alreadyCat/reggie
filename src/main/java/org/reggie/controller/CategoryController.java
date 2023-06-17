@@ -57,9 +57,10 @@ public class CategoryController {
 
     //    获取菜品分类下拉
     @GetMapping("/list")
-    public Res<List<Category>> categoryList(int type) {
+    public Res<List<Category>> categoryList(Category category) {
         LambdaQueryWrapper<Category> categoryLambdaQueryWrapper = new LambdaQueryWrapper<>();
-        categoryLambdaQueryWrapper.eq(Category::getType,type);
+        categoryLambdaQueryWrapper.eq(category.getType() != null,Category::getType,category.getType());
+        categoryLambdaQueryWrapper.orderByAsc(Category::getSort).orderByDesc(Category::getUpdateTime);
         List<Category> list = categoryService.list(categoryLambdaQueryWrapper);
         return Res.success(list);
     }
